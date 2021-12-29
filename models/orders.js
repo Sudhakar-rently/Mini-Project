@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   orders.ordersdata=async function(id){
-    const row= await sequelize.models.orders.findAll({id});
+    const row= await sequelize.models.orders.findAll({where:{user_id:id}});
     return row;
  };
 
