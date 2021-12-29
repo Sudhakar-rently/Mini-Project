@@ -66,6 +66,29 @@ describe('Testing the user model ', () => {
         expect(flag).to.be.null;
         expect(value).to.be.equal('Success');
     });
+
+    it('It should handle deleting non-existing user', async () => {
+        const row={
+            username: "zxckvg",
+            password: "zxc@123",
+            email: "zxc123@qwe.com",
+            ph_number: 87564747
+        };
+        await db.sequelize.models.users.Insertdata(row);
+        const rowvalue= await db.sequelize.models.users.findOne({
+            where : { username : row.username }
+        });
+        const value=await db.sequelize.models.users.Deletedata(1001);
+        
+        const flag= await db.sequelize.models.users.findOne({
+            where : { username : row.username }
+        });
+        expect(flag.username).to.be.equal("zxckvg");
+        expect(flag.password).to.be.equal("zxc@123");
+        expect(flag.email).to.be.equal("zxc123@qwe.com");
+        expect(flag.ph_number).to.be.equal(87564747);
+        expect(value).to.be.equal('Failed');
+    });
   });
 
   describe('#readdata',()=>{
@@ -86,6 +109,22 @@ describe('Testing the user model ', () => {
         expect(data.password).to.be.equal("zxc@123");
         expect(data.email).to.be.equal("zxc123@qwe.com");
         expect(data.ph_number).to.be.equal(87564747);
+    });
+
+    it('It should handle accessing non-existing user', async () => {
+        const row={
+            username: "zxckvg",
+            password: "zxc@123",
+            email: "zxc123@qwe.com",
+            ph_number: 87564747
+        };
+        await db.sequelize.models.users.Insertdata(row);
+
+        const rowvalue= await db.sequelize.models.users.findOne({
+            where : { username : row.username }
+        });
+        const data=await db.sequelize.models.users.readdata(97576);
+        expect(data).to.be.null;
     });
   });
 });

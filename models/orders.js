@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
   orders.Deletedata = async function(idval,userid){
     const row=await sequelize.models.orders.destroy({where: {id:idval,user_id:userid}});
     console.log(row);
-    return row? 'Success' : 'Failed';
+    return row? 'Success' : 'Order not found';
   }
 
   orders.ordersdata=async function(id){

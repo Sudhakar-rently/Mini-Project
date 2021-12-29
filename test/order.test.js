@@ -87,13 +87,51 @@ describe('Testing the order model ', () => {
         const rowvalue= await db.sequelize.models.orders.findOne({
             where : { product : row.product }
         });
-        const value=await db.sequelize.models.orders.Deletedata(rowvalue.id);
+        const value=await db.sequelize.models.orders.Deletedata(rowvalue.id,record.id);
         
         const flag= await db.sequelize.models.orders.findOne({
             where : { product : row.product }
         });
         expect(flag).to.be.null;
         expect(value).to.be.equal('Success');
+    });
+
+    it('It should handle deleting non-existed order', async () => {
+        const user={
+            username: "zxckvg",
+            password: "zxc@123",
+            email: "zxc123@qwe.com",
+            ph_number: 87564747
+        };
+        await db.sequelize.models.users.Insertdata(user);
+        
+        const record=await db.sequelize.models.users.findOne({
+            where: {
+              username:user.username
+            }
+        });
+        const row={
+            product:"lock3",
+            price:876,
+            quantity:854,
+            user_id:record.id
+        };
+
+        await db.sequelize.models.orders.Insertdata(row);
+
+        const rowvalue= await db.sequelize.models.orders.findOne({
+            where : { product : row.product }
+        });
+        const value=await db.sequelize.models.orders.Deletedata(900,record.id);
+        
+        const flag= await db.sequelize.models.orders.findOne({
+            where : { product : row.product }
+        });
+        expect(flag.product).to.be.equal("lock3");
+        expect(flag.price).to.be.equal(876);
+        expect(flag.quantity).to.be.equal(854);
+        expect(flag.user_id).to.be.equal(record.id);
+        expect(value).to.be.equal('Order not found');
     });
   });
 
@@ -144,5 +182,38 @@ describe('Testing the order model ', () => {
         expect(data[1].quantity).to.be.equal(4);
         expect(data[1].user_id).to.be.equal(record.id);
     });
+
+    it('It should handle accessing non-existing orders', async () => {
+        const user={
+            username: "zxckvg",
+            password: "zxc@123",
+            email: "zxc123@qwe.com",
+            ph_number: 87564747
+        };
+        await db.sequelize.models.users.Insertdata(user);
+        
+        const record=await db.sequelize.models.users.findOne({
+            where: {
+              username:user.username
+            }
+        });
+        const row={
+            product:"lock3",
+            price:876,
+            quantity:854,
+            user_id:record.id
+        };
+
+        await db.sequelize.models.orders.Insertdata(row);
+
+        const rowvalue= await db.sequelize.models.orders.findOne({
+            where : { product : row.product }
+        });
+
+        const data=await db.sequelize.models.orders.ordersdata(1000);
+        
+        expect(data[0]).to.be.undefined;
+    });
+  
   });
 });
