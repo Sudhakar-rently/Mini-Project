@@ -62,9 +62,10 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   users.Deletedata = async function(idval){
+    console.log("idval,",idval);
     const row=await sequelize.models.users.destroy({where: {id:idval}});
     console.log(row);
-    return row? 'Success' : 'Failed';
+    return (row!==0)? 'Success' : 'Failed';
   }
 
   return users;

@@ -48,11 +48,6 @@ module.exports = (sequelize, DataTypes) => {
     paranoid:true,
     modelName: 'orders',
   });
-  
-  orders.readdata=async function(id){
-    const row= await sequelize.models.orders.findByPk(id);
-    return row;
-  };
 
   orders.Insertdata=async function(record){
     console.log("record  ",record);
