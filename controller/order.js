@@ -20,8 +20,9 @@ const getorders=async(req,res)=>{
 }
 
 const cancelorder=async(req,res)=>{
+    let userid=req.user_id;
     let value=req.query.id;
-    const row= await db.orders.Deletedata(value);
+    const row= await db.orders.Deletedata(value,userid);
     res.json(row);
 }
 
