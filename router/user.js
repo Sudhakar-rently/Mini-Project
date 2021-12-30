@@ -18,7 +18,7 @@ router.get("/",celebrate({
     })
 }),usercontroller.getuser);
 
-router.post("/",celebrate({
+router.post("/",celebrate({ 
     body: Joi.object().keys({
       username: Joi.string().required(),
       password: Joi.string().required(),

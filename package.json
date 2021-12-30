@@ -5,13 +5,14 @@
   "main": "app.js",
   "scripts": {
     "cleandb": "sequelize db:drop --env=test && sequelize db:create --env=test && NODE_ENV=test sequelize db:migrate --env=test",
-
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit test/*.test.js",
-    "dev": "nodemon -r dotenv/config app.js"
+    "dev": "nodemon -r dotenv/config app.js",
+    "coverage": "nyc --reporter=html npm run test"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
     "celebrate": "^15.0.0",
     "chai": "^4.3.4",
